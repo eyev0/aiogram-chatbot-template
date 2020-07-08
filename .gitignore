@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.egg-info/
+
+# Translations
+*.mo
+*.pot
+
+# Environments
+postgres.env
+.env
+
+# .idea
+.idea/
+
+# logs
+logs/
+
+# scrapy
+scrape_magic/config.py
+scrape_magic/**/*.json
+*.jl
