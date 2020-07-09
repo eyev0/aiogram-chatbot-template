@@ -5,7 +5,7 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        image: wakeupbot:latest
+        image: templatebot:latest
         restart: 'no'
         stop_signal: SIGINT
         environment:
@@ -32,8 +32,6 @@ services:
             DOTENV_LOADED: "True"
         networks:
             - net
-        volumes:
-            - ./logs:/app/logs
         depends_on:
             - db
             - redis
@@ -63,6 +61,6 @@ networks:
 
 volumes:
     dbdata:
-        name: wakeupbot-db
+        name: templatebot-db
     redisdata:
-        name: wakeupbot-redis
+        name: templatebot-redis
