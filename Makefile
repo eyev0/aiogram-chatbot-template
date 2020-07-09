@@ -4,7 +4,7 @@ include .env
 tail := 200
 PYTHONPATH := $(shell pwd):${PYTHONPATH}
 
-PROJECT := wakeupbot
+PROJECT := templatebot
 LOCALES_DOMAIN := bot
 LOCALES_DIR := locales
 VERSION := 0.1.0
@@ -35,18 +35,21 @@ install-env:
 install-hooks:
 	$(py) pre-commit install
 
-install:
-	$(MAKE) install-env
-	$(MAKE) install-hooks
-	$(shell mkdir) ./locales
-	$(MAKE) pybabel-extract
-	$(MAKE) texts-create-language language=en
-	$(MAKE) texts-create-language language=ru
-	$(MAKE) docker-db
+install-db: docker-db
+	sleep 2
+	$(shell mkdir ./migrations/versions)
 	$(MAKE) migration message="init_db"
 	$(MAKE) migrate
 	$(MAKE) docker-db-stop
 
+install-texts:
+	$(shell mkdir ./locales)
+	$(MAKE) pybabel-extract
+	$(MAKE) texts-create-language language=en
+	$(MAKE) texts-create-language language=ru
+
+install: install-env install-hooks install-db install-texts
+	@echo "$@ finished!"
 # =================================================================================================
 # Development
 # =================================================================================================
@@ -130,10 +133,10 @@ docker-build:
 	docker-compose build
 
 docker-db:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d redis db
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d db redis
 
 docker-db-stop:
-	docker-compose stop redis db
+	docker-compose stop db redis
 
 docker-up:
 	docker-compose up -d --remove-orphans
