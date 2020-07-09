@@ -38,6 +38,7 @@ install-hooks:
 install:
 	$(MAKE) install-env
 	$(MAKE) install-hooks
+	$(shell mkdir) ./locales
 	$(MAKE) pybabel-extract
 	$(MAKE) texts-create-language language=en
 	$(MAKE) texts-create-language language=ru
