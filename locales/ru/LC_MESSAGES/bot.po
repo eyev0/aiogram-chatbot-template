@@ -1,0 +1,100 @@
+# Russian translations for templatebot.
+# Copyright (C) 2020 Illemius
+# This file is distributed under the same license as the templatebot
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: templatebot 0.1.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2020-07-09 13:22+0300\n"
+"PO-Revision-Date: 2020-07-09 13:22+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: app/handlers/base.py:17
+msgid ""
+"Hello, {user}.\n"
+"Send /help to see list of my commands.\n"
+"You can also change language by sending /settings command."
+msgstr ""
+
+#: app/handlers/base.py:31
+msgid "Here's a list of my commands:"
+msgstr ""
+
+#: app/handlers/base.py:32
+msgid "{command} - Start conversation with bot"
+msgstr ""
+
+#: app/handlers/base.py:33
+msgid "{command} - Show this message"
+msgstr ""
+
+#: app/handlers/base.py:34
+msgid "{command} - User settings"
+msgstr ""
+
+#: app/handlers/chat_settings.py:48
+msgid "Choose chat language"
+msgstr ""
+
+#: app/handlers/chat_settings.py:75
+msgid "Language changed to {new_language}"
+msgstr ""
+
+#: app/handlers/chat_settings.py:90
+msgid "Do not disturb mode {mode}"
+msgstr ""
+
+#: app/handlers/chat_settings.py:91
+msgid "switched on"
+msgstr ""
+
+#: app/handlers/chat_settings.py:91
+msgid "switched off"
+msgstr ""
+
+#: app/handlers/chat_settings.py:105
+msgid "Settings saved"
+msgstr ""
+
+#: app/handlers/superuser.py:26
+msgid "Successfuly changed is_superuser to {is_superuser} for user {user}"
+msgstr ""
+
+#: app/handlers/superuser.py:31
+msgid "Failed to set is_superuser to {is_superuser} for user {user}"
+msgstr ""
+
+#: app/utils/chat_settings.py:24
+msgid "Personal settings"
+msgstr ""
+
+#: app/utils/chat_settings.py:29
+msgid "{status} Do not disturb"
+msgstr ""
+
+#: app/utils/chat_settings.py:39 app/utils/chat_settings.py:81
+msgid "{flag} Language"
+msgstr ""
+
+#: app/utils/chat_settings.py:49 app/utils/chat_settings.py:91
+msgid "Done"
+msgstr ""
+
+#: app/utils/chat_settings.py:64
+msgid "Settings for chat {chat_title}"
+msgstr ""
+
+#: app/utils/chat_settings.py:71
+msgid "{status} Join filter"
+msgstr ""
