@@ -41,7 +41,7 @@ install-db: docker-db
 	$(MAKE) docker-db-stop
 
 install-texts:
-	$(MAKE) pybabel-extract
+	$(MAKE) texts-extract
 	$(MAKE) texts-create-language language=en
 	$(MAKE) texts-create-language language=ru
 
