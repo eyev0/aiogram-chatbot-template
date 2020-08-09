@@ -4,7 +4,7 @@ include .env
 tail := 200
 PYTHONPATH := $(shell pwd):${PYTHONPATH}
 
-PROJECT := wakeupbot
+PROJECT := templatebot
 LOCALES_DOMAIN := bot
 LOCALES_DIR := locales
 VERSION := 0.1.0
