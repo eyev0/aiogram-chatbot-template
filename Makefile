@@ -44,6 +44,7 @@ install-texts:
 	$(MAKE) texts-extract
 	$(MAKE) texts-create-language language=en
 	$(MAKE) texts-create-language language=ru
+	$(MAKE) texts-compile
 
 install: install-env install-hooks install-db install-texts
 	@echo "$@ finished!"
