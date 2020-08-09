@@ -37,12 +37,10 @@ install-hooks:
 
 install-db: docker-db
 	sleep 3
-	$(shell mkdir ./migrations/versions)
 	$(MAKE) upgrade-db
 	$(MAKE) docker-db-stop
 
 install-texts:
-	$(shell mkdir ./locales)
 	$(MAKE) pybabel-extract
 	$(MAKE) texts-create-language language=en
 	$(MAKE) texts-create-language language=ru
