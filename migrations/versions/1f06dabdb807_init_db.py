@@ -7,6 +7,7 @@ Create Date: 2020-07-09 13:22:23.412063
 """
 import sqlalchemy as sa
 from alembic import op
+from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = "1f06dabdb807"
@@ -85,6 +86,21 @@ def upgrade():
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(op.f("ix_users_id"), "users", ["id"], unique=True)
+    op.create_table(
+        "apscheduler_jobs",
+        sa.Column("id", sa.VARCHAR(length=191), nullable=False),
+        sa.Column(
+            "next_run_time", postgresql.DOUBLE_PRECISION(precision=53), nullable=True
+        ),
+        sa.Column("job_state", postgresql.BYTEA(), nullable=False),
+        sa.PrimaryKeyConstraint("id"),
+    )
+    op.create_index(
+        op.f("ix_apscheduler_jobs_next_run_time"),
+        "apscheduler_jobs",
+        ["next_run_time"],
+        unique=False,
+    )
     # ### end Alembic commands ###
 
 
@@ -94,4 +110,8 @@ def downgrade():
     op.drop_table("users")
     op.drop_index(op.f("ix_chats_id"), table_name="chats")
     op.drop_table("chats")
+    op.drop_index(
+        op.f("ix_apscheduler_jobs_next_run_time"), table_name="apscheduler_jobs"
+    )
+    op.drop_table("apscheduler_jobs")
     # ### end Alembic commands ###

@@ -2,8 +2,6 @@ from contextlib import suppress
 
 from aiogram import types
 from aiogram.dispatcher.filters.filters import OrFilter
-from aiogram.dispatcher.filters.state import default_state
-from aiogram.types import ContentTypes, ForceReply
 from aiogram.utils.exceptions import MessageCantBeDeleted, MessageNotModified
 from loguru import logger
 
@@ -17,7 +15,7 @@ _ = i18n.gettext
 
 
 @dp.message_handler(commands=["settings"])
-async def cmd_chat_settings(message: types.Message, chat: Chat, user: User):
+async def cmd_settings(message: types.Message, chat: Chat, user: User):
     logger.info(
         "User {user} wants to configure chat {chat}", user=user.id, chat=chat.id
     )
@@ -29,9 +27,7 @@ async def cmd_chat_settings(message: types.Message, chat: Chat, user: User):
 
 
 @dp.callback_query_handler(cb_user_settings.filter(property="language", value="change"))
-async def cq_chat_settings_language(
-    query: types.CallbackQuery, chat: Chat, callback_data: dict
-):
+async def cq_language(query: types.CallbackQuery, callback_data: dict):
     logger.info(
         "User {user} wants to change language", user=query.from_user.id,
     )
@@ -57,7 +53,7 @@ async def cq_chat_settings_language(
         ]
     )
 )
-async def cq_chat_settings_choose_language(
+async def cq_choose_language(
     query: types.CallbackQuery, chat: Chat, user: User, callback_data: dict
 ):
     target_language = callback_data["value"]
@@ -82,9 +78,7 @@ async def cq_chat_settings_choose_language(
 @dp.callback_query_handler(
     cb_user_settings.filter(property="do_not_disturb", value="switch")
 )
-async def cq_user_settings_do_not_disturb(
-    query: types.CallbackQuery, user: User, chat: Chat
-):
+async def cq_do_not_disturb(query: types.CallbackQuery, user: User, chat: Chat):
     logger.info("User {user} switched DND mode", user=query.from_user.id)
     await query.answer(
         _("Do not disturb mode {mode}").format(
@@ -98,9 +92,9 @@ async def cq_user_settings_do_not_disturb(
 
 
 @dp.callback_query_handler(cb_user_settings.filter(property="done", value="true"))
-async def cq_chat_settings_done(query: types.CallbackQuery, chat: Chat):
+async def cq_done(query: types.CallbackQuery):
     logger.info(
         "User {user} close settings menu", user=query.from_user.id,
     )
-    await query.answer(_("Settings saved"), show_alert=True)
+    await query.answer(_("Settings saved"))
     await query.message.delete()

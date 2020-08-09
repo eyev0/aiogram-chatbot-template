@@ -11,7 +11,7 @@ from app import config
 from app.misc import dp
 from app.models import db
 from app.models.user import User
-from app.utils import redis
+from app.utils import redis, scheduler
 
 runner = Executor(dp)
 
@@ -37,6 +37,7 @@ def setup():
     logger.info("Configure executor...")
     db.setup(runner)
     redis.setup(runner)
+    scheduler.setup(runner)
     runner.on_startup(on_startup_webhook, webhook=True, polling=False)
     if config.SUPERUSER_STARTUP_NOTIFIER:
         runner.on_startup(on_startup_notify)
