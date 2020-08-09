@@ -4,7 +4,7 @@ include .env
 tail := 200
 PYTHONPATH := $(shell pwd):${PYTHONPATH}
 
-PROJECT := templatebot
+PROJECT := wakeupbot
 LOCALES_DOMAIN := bot
 LOCALES_DIR := locales
 VERSION := 0.1.0
@@ -36,10 +36,9 @@ install-hooks:
 	$(py) pre-commit install
 
 install-db: docker-db
-	sleep 2
+	sleep 3
 	$(shell mkdir ./migrations/versions)
-	$(MAKE) migration message="init_db"
-	$(MAKE) migrate
+	$(MAKE) upgrade-db
 	$(MAKE) docker-db-stop
 
 install-texts:
@@ -74,7 +73,7 @@ lint: black flake8 seed-isort-config isort
 entrypoint:
 	pipenv run bash ../docker-entrypoint.sh ${args}
 
-pybabel-extract:
+texts-extract:
 	$(py) pybabel extract . \
     	-o ${LOCALES_DIR}/${LOCALES_DOMAIN}.pot \
     	--project=${PROJECT} \
@@ -83,14 +82,14 @@ pybabel-extract:
     	-k __:1,2 \
     	--sort-by-file -w 99
 
-pybabel-update:
+texts-update:
 	$(py) pybabel update \
 		-d ${LOCALES_DIR} \
 		-D ${LOCALES_DOMAIN} \
 		--update-header-comment \
 		-i ${LOCALES_DIR}/${LOCALES_DOMAIN}.pot
 
-texts-update: pybabel-extract pybabel-update
+texts-refresh: texts-extract texts-update
 
 texts-compile:
 	$(py) pybabel compile -d locales -D bot
@@ -101,16 +100,16 @@ texts-create-language:
 alembic:
 	PYTHONPATH=$(shell pwd):${PYTHONPATH} $(py) alembic ${args}
 
-migrate:
+upgrade-db:
 	PYTHONPATH=$(shell pwd):${PYTHONPATH} $(py) alembic upgrade head
 
 migration:
 	PYTHONPATH=$(shell pwd):${PYTHONPATH} $(py) alembic revision --autogenerate -m "${message}"
 
-downgrade:
+downgrade-db:
 	PYTHONPATH=$(shell pwd):${PYTHONPATH} $(py) alembic downgrade -1
 
-_beforeStart: docker-db migrate requirements
+_beforeStart: docker-db upgrade-db texts-compile requirements
 
 _app:
 	$(py) python -m core
@@ -158,6 +157,8 @@ docker-logs:
 # =================================================================================================
 
 app-create: _beforeStart docker-db-stop docker-build docker-stop docker-up
+
+app-recreate: app-down app-create
 
 app-logs:
 	$(MAKE) docker-logs args="bot"
